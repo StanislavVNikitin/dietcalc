@@ -18,3 +18,22 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::group([
+    'prefix' => 'admin',
+    'namespace' => 'Admin',
+    'as' => 'admin.'
+], function () {
+
+    Route::resource('foods', 'FoodController')->except('show');
+   // Route::get('/foods', 'FoodController@index')->name('foods');
+   // Route::match(['get', 'post'],'/foodcreate', 'FoodController@create')->name('foodcreate');
+   // Route::get('/foodedit/{foods}', 'FoodController@edit')->name('foodedit');
+   // Route::post('/foodupdate/{foods}', 'FoodController@update')->name('foodupdate');
+   // Route::get('/destroy/{foods}', 'FoodController@destroy')->name('fooddestroy');
+});
+
+Route::resource('diet', 'DietController')->except('show');
+
+
