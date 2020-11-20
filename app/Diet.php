@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Diet extends Model
 {
-    protected $fillable = ['food_id', 'count'];
+    protected $fillable = ['food_id', 'count', 'user_id'];
     public $timestamps = false;
     public $incrementing = true;
 

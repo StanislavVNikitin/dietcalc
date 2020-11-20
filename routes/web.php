@@ -26,7 +26,10 @@ Route::group([
     'as' => 'admin.',
     'middleware' => ['auth', 'is.admin']
 ], function () {
-Route::resource('foods', 'FoodController')->except('show');
+    Route::resource('foods', 'FoodController')->except('show');
+    Route::get('/users', 'UserController@index')->name('updateUser');
+    Route::get('/users/toggleAdmin/{user}', 'UserController@toggleAdmin')->name('toggleAdmin');
+    Route::delete('/users/{user}', 'UserController@destroy')->name('deleteUser');
    // Route::get('/foods', 'FoodController@index')->name('foods');
    // Route::match(['get', 'post'],'/foodcreate', 'FoodController@create')->name('foodcreate');
    // Route::get('/foodedit/{foods}', 'FoodController@edit')->name('foodedit');
@@ -35,7 +38,7 @@ Route::resource('foods', 'FoodController')->except('show');
 });
 
 Route::resource('diet', 'DietController')->except('show')->middleware('auth');
-Route::get('diet/view', 'DietController@view')->middleware('auth');
+Route::get('diet/view', 'DietController@view')->name('dietview')->middleware('auth');
 Route::match(['post','get'],'/profile',[
     'uses' => 'ProfileController@update',
     'as' => 'updateProfile'

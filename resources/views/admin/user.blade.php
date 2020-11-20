@@ -11,56 +11,36 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Продукт</th>
-                                    <th scope="col">Количество в граммах</th>
-                                    <th scope="col">Белки</th>
-                                    <th scope="col">Жиры</th>
-                                    <th scope="col">Углеводы</th>
-                                    <th scope="col">Калорийность</th>
+                                    <th scope="col">Пользователь</th>
+                                    <th scope="col">Права Администратор</th>
+                                    <th scope="col">Удалить</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                                @foreach ($diets as $diet)
+                                @foreach ($users as $user)
                                     <tr>
-                                        <td>{{ $diet["foodProduct"] }}</td>
-                                        <td>{{ $diet["count"] }}</td>
+                                        <td>{{ $user->name }}</td>
                                         <td>
-                                            {{ $diet["foodProteins"] }}
+                                            @if ($user->is_admin)
+                                                <a href="{{route('admin.toggleAdmin', $user)}}"><button type="button" class="btn btn-danger">Разжаловать</button></a>
+                                            @else
+                                                <a href="{{route('admin.toggleAdmin', $user)}}"> <button type="button" class="btn btn-success">Повысить до Админа</button></a>
+                                            @endif
                                         </td>
-                                        <td>{{ $diet["foodFats"] }}</td>
-                                        <td>{{ $diet["foodCarbohydrates"] }}</td>
-                                        <td>{{ $diet["foodCalories"]  }}</td>
+                                        <td>
+                                            <form method="post" action="{{ route('admin.deleteUser', $user) }}"><button type="submit" class="btn btn-danger">X</button>
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+
+                                        </td>
                                     </tr>
                                 @endforeach
-                                <tr>
-                                    <td><b>Сумма</b></td>
-                                    <td></td>
-                                    <td>{{ $sumdiet['dietProteins'] }}</td>
-                                    <td>{{ $sumdiet['dietFats'] }}</td>
-                                    <td>{{ $sumdiet['dietCarbohydrates']  }}</td>
-                                    <td>{{ $sumdiet['dietCalories'] }}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Сумма на кг. веса({{ $sumdiet['weight'] }} кг.)</b></td>
-                                    <td></td>
-                                    <td>{{ $sumdiet['dietProteinsKgD'] }}</td>
-                                    <td>{{ $sumdiet['dietFatsKgD'] }}</td>
-                                    <td>{{ $sumdiet['dietCarbohydratesKgD']  }}</td>
-                                    <td>{{ $sumdiet['dietCaloriesKgD'] }}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Энергия в %</b></td>
-                                    <td></td>
-                                    <td><b>{{ $sumdiet['dietProteinsProcentE'] }} %</b></td>
-                                    <td><b>{{ $sumdiet['dietFatsProcentE'] }} %</b></td>
-                                    <td><b>{{ $sumdiet['dietCarbohydratesProcentE']  }} %</b></td>
-                                    <td></td>
-                                </tr>
                             </tbody>
                         </table>
 
-
+                        {{ $users->links() }}
                     </div>
                 </div>
             </div>

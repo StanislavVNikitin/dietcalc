@@ -24,12 +24,41 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('diet.index') }}">{{ __('Диета') }}</a>
+                    @isset(Auth::user()->name)
+                        <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Диета <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('diet.index') }}">
+                                Редактировать
+                            </a>
+                            <a class="dropdown-item" href="{{ route('dietview') }}">
+                                Для печати
+                            </a>
+                            <a class="dropdown-item" href="{{ route('diet.create') }}">
+                                Добавить продукт
+                            </a>
+                        </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.foods.index') }}">{{ __('Админка') }}</a>
+                    @endisset
+                    @isset(Auth::user()->is_admin)
+                        @if (Auth::user()->is_admin)
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Админка <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('admin.foods.index') }}">
+                                Продукты
+                            </a>
+                            <a class="dropdown-item" href="{{ route('admin.updateUser') }}">
+                                Пользователи
+                            </a>
+                        </div>
                         </li>
+                        @endif
+                    @endisset
                 </ul>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
