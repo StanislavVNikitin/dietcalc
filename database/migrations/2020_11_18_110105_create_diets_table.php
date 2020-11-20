@@ -14,8 +14,12 @@ class CreateDietsTable extends Migration
     public function up()
     {
         Schema::create('diets', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+            $table->bigIncrements('id')->unsigned();
+            $table->unsignedBigInteger('food_id');
+            $table->float('count')->default(0);
+            $table->foreign('food_id')
+                ->references('id')
+                ->on('foods');
         });
     }
 

@@ -5,56 +5,62 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Диета') }}</div>
-
+                    <div class="card-header">Профиль пользователя</div>
                     <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Продукт</th>
-                                    <th scope="col">Количество в граммах</th>
-                                    <th scope="col">Белки</th>
-                                    <th scope="col">Жиры</th>
-                                    <th scope="col">Углероды</th>
-                                    <th scope="col">Калорийность</th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <form method="POST" action="{{ route('updateProfile') }}">
+                            @csrf
 
-                                @foreach ($diets as $diet)
-                                    <tr>
-                                        <td>{{ $diet["foodProduct"] }}</td>
-                                        <td>{{ $diet["count"] }}</td>
-                                        <td>
-                                            {{ $diet["foodProteins"] * $diet["count"] / 100 }}
-                                        </td>
-                                        <td>{{ $diet["foodFats"]  * $diet["count"] / 100}}</td>
-                                        <td>{{ $diet["foodCarbohydrates"] * $diet["count"] / 100 }}</td>
-                                        <td>{{ $diet["foodCalories"]  * $diet["count"] / 100 }}</td>
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right">Имя пользователя</label>
+                                <div class="col-md-6">
+                                    <input id="name" type="text" class="form-control" name="name" value="{{ $user->name }}">
+                                </div>
+                            </div>
 
-                                        <td><a href="{{ route('diet.edit', $diet) }}"><button type="button" class="btn btn-success">U</button></a></td>
-                                        <td>
-                                            <form method="post" action="{{ route('diet.destroy', $diet) }}"><button type="submit" class="btn btn-danger">X</button>
-                                            @csrf
-                                            @method('DELETE')
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                <tr>
-                                    <td>Сумма</td>
-                                    <td></td>
-                                    <td>{{ $sumdiet['dietProteins'] }}</td>
-                                    <td>{{ $sumdiet['dietFats'] }}</td>
-                                    <td>{{ $sumdiet['dietCarbohydrates']  }}</td>
-                                    <td>{{ $sumdiet['dietCalories'] }}</td>
-                                    <td colspan="2"><a href="{{ route('diet.create') }}"><button type="button" class="btn btn-success">Добавить</button></a></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                            <div class="form-group row">
+                                <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail</label>
 
+                                <div class="col-md-6">
+                                    <input id="email" type="email" class="form-control" name="email" value="{{ $user->email }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="weight" class="col-md-4 col-form-label text-md-right">Вес в кг</label>
+                                <div class="col-md-6">
+                                    <input id="weight" type="weight" class="form-control" name="weight" value="{{ $user->weight }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Текущий пароль</label>
+
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control" name="password">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="newPassword" class="col-md-4 col-form-label text-md-right">Новый пароль</label>
+
+                                <div class="col-md-6">
+                                    <input id="newPassword" type="password" class="form-control" name="newPassword">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="newPasswordConfirm" class="col-md-4 col-form-label text-md-right">Подтверждение нового пароля</label>
+
+                                <div class="col-md-6">
+                                    <input id="newPasswordConfirm" type="password" class="form-control" name="newPasswordConfirm">
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Изменить
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
 
                     </div>
                 </div>

@@ -18,15 +18,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+Route::get('/Home', 'HomeController@index')->name('Home');
 
 Route::group([
     'prefix' => 'admin',
     'namespace' => 'Admin',
-    'as' => 'admin.'
+    'as' => 'admin.',
+    'middleware' => ['auth', 'is.admin']
 ], function () {
-
-    Route::resource('foods', 'FoodController')->except('show');
+Route::resource('foods', 'FoodController')->except('show');
    // Route::get('/foods', 'FoodController@index')->name('foods');
    // Route::match(['get', 'post'],'/foodcreate', 'FoodController@create')->name('foodcreate');
    // Route::get('/foodedit/{foods}', 'FoodController@edit')->name('foodedit');
@@ -34,6 +34,10 @@ Route::group([
    // Route::get('/destroy/{foods}', 'FoodController@destroy')->name('fooddestroy');
 });
 
-Route::resource('diet', 'DietController')->except('show');
-
+Route::resource('diet', 'DietController')->except('show')->middleware('auth');
+Route::get('diet/view', 'DietController@view')->middleware('auth');
+Route::match(['post','get'],'/profile',[
+    'uses' => 'ProfileController@update',
+    'as' => 'updateProfile'
+]);
 

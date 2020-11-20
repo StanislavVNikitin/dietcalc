@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Добавить продукт')
+@section('title', 'Добавить продукт в диету')
 
 @section('content')
     <div class="container">
@@ -9,33 +9,29 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <form enctype="multipart/form-data" method="POST" action="@if (!$foods->id){{ route('admin.foods.store') }}@else{{ route('admin.foods.update', $foods) }}@endif">
+                        <form enctype="multipart/form-data" method="POST" action="@if (!$diets->id){{ route('diet.store') }}@else{{ route('diet.update', $diets) }}@endif">
                             @csrf
-                            @if ($foods->id) @method('PATCH') @endif
+                            @if ($diets->id) @method('PATCH') @endif
+                            <div class="form-group">
+                                <label for="food">Продукт</label>
+                                <select name="food_id" class="form-control" id="food">
+                                    @forelse($foods as $item)
+                                        <option
+                                            @if ($item['id'] == old('foodProduct') || $item['id'] == $diets['food_id'] ) selected @endif
+                                            value="{{ $item['id'] }}">{{ $item['foodProduct'] }}
+                                        </option>
+                                    @empty
+                                        <h2>Нет продуктов</h2>
+                                    @endforelse
 
-                            <div class="form-group">
-                                <label for="foodProduct">Название продукта</label>
-                                <input name="foodProduct" type="text" class="form-control" id="foodProduct" value="{{ $foods->foodProduct ?? old('foodProduct') }}">
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="foodProteins">Белки</label>
-                                <input name="foodProteins" type="text" class="form-control" id="foodProteins" value="{{ $foods->foodProteins ?? old('foodProteins') }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="foodFats">Жиры</label>
-                                <input name="foodFats" type="text" class="form-control" id="foodFats" value="{{ $foods->foodFats ?? old('foodFats') }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="foodCarbohydrates">Углеводы</label>
-                                <input name="foodCarbohydrates" type="text" class="form-control" id="foodCarbohydrates" value="{{ $foods->foodCarbohydrates ?? old('foodCarbohydrates') }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="foodCalories">Калорийность</label>
-                                <input name="foodCalories" type="text" class="form-control" id="foodCalories" value="{{ $foods->foodCalories ?? old('foodCalories') }}">
+                                <input name="count" type="text" class="form-control" id="count" value="{{ $diets->count ?? old('count') }}">
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="form-control">
-                                    @if ($foods->id) Изменить @else Добавить @endif
+                                    @if ($diets->id) Изменить @else Добавить @endif
                                 </button>
 
                             </div>

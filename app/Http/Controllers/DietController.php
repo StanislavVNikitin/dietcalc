@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Diet;
+use App\Foods;
 use Illuminate\Http\Request;
 
 class DietController extends Controller
@@ -13,17 +15,57 @@ class DietController extends Controller
      */
     public function index()
     {
-        //
+
+        $diet = new Diet();
+        $diet = Diet::query()->join('foods','food_id', '=','foods.id')
+            ->select('foods.foodProduct', 'foods.foodProteins', 'foods.foodFats',
+                'foods.foodCarbohydrates','foods.foodCalories', 'diets.id','diets.count')->get();
+        if ($diet->count()){
+            $diet = Diet::dietcalc($diet);
+            $sumdiet = Diet::sumdiet($diet);
+             return view('dietedit', [
+                'diets' => $diet,
+                'sumdiet' => $sumdiet
+            ]);
+        }
+            else
+            {
+                return view('dietnew', []);
+            }
+
     }
 
+    public function view()
+    {
+        $diet = new Diet();
+        $diet = Diet::query()->join('foods','food_id', '=','foods.id')
+            ->select('foods.foodProduct', 'foods.foodProteins', 'foods.foodFats',
+                'foods.foodCarbohydrates','foods.foodCalories', 'diets.id','diets.count')->get();
+        if ($diet->count()){
+            $diet = Diet::dietcalc($diet);
+            $sumdiet = Diet::sumdiet($diet);
+            return view('dietview', [
+                'diets' => $diet,
+                'sumdiet' => $sumdiet
+            ]);
+        }
+        else
+        {
+            return view('dietnew', []);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Diet $diet)
     {
-        //
+         return view('creatediet', [
+            'foods' => Foods::query()->select(['id', 'foodProduct', 'foodProteins', 'foodFats'])->get(),
+            'diets' => $diet
+        ]);
+
     }
 
     /**
@@ -32,9 +74,11 @@ class DietController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Diet $diet)
     {
-        //
+        $diet->fill($request->all());
+        $diet->save();
+        return redirect()->route('diet.index')->with('success', 'Продукт добавлен!');
     }
 
     /**
@@ -54,9 +98,12 @@ class DietController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, Diet $diet)
     {
-        //
+        return view('creatediet', [
+            'foods' => Foods::query()->select(['id', 'foodProduct', 'foodProteins', 'foodFats'])->get(),
+            'diets' => $diet
+        ]);
     }
 
     /**
@@ -66,9 +113,11 @@ class DietController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,  Diet $diet)
     {
-        //
+        $diet->fill($request->all());
+        $diet->save();
+        return redirect()->route('diet.index')->with('success', 'Продукт добавлен!');
     }
 
     /**
@@ -77,8 +126,9 @@ class DietController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Diet $diet)
     {
-        //
+        $diet->delete();
+        return redirect()->route('diet.index')->with('success', 'Продукт удален!');
     }
 }
