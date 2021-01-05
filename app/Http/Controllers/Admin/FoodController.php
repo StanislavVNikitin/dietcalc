@@ -29,8 +29,9 @@ class FoodController extends Controller
         $food = new Foods();
 
         if ($request->isMethod('post')) {
+            $this->validate($request, Foods::rules(), [], Foods::attributeNames());
             $food->fill($request->all())->save();
-            return redirect()->route('admin.foods.index')->with('success', 'Продукт добавлен!');
+            return redirect()->route('admin.foods.index')->with('success', 'Продукт добавлен в базу продуктов!');
         }
 
         return view('admin.create', [
@@ -47,9 +48,10 @@ class FoodController extends Controller
      */
     public function store(Request $request,  Foods $food)
     {
+        $this->validate($request, Foods::rules(), [], Foods::attributeNames());
         $food->fill($request->all());
         $food->save();
-        return redirect()->route('admin.foods.index')->with('success', 'Продукт добавлен!');
+        return redirect()->route('admin.foods.index')->with('success', 'Продукт добавлен в базу продуктов!');
     }
 
     /**
@@ -88,7 +90,7 @@ class FoodController extends Controller
     {
         $food->fill($request->all());
         $food->save();
-        return redirect()->route('admin.foods.index')->with('success', 'Продукт добавлен!');
+        return redirect()->route('admin.foods.index')->with('success', 'Продукт изменен в базу продуктов!');
     }
 
     /**
@@ -100,6 +102,6 @@ class FoodController extends Controller
     public function destroy(Foods $food)
     {
         $food->delete();
-        return redirect()->route('admin.foods.index')->with('success', 'Продукт удален!');
+        return redirect()->route('admin.foods.index')->with('success', 'Продукт удален из базы продуктов!');
     }
 }

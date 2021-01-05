@@ -56,5 +56,17 @@ class Diet extends Model
         }
         return $diet;
     }
-
+    public static function rules(){
+        $tableIdFoods = (new Foods())->getTable();
+         return [
+            'food_id' => "required|exists:{$tableIdFoods},id",
+            'count' => 'required|numeric|min:1|max:1000'
+        ];
+    }
+    public static function attributeNames(){
+        return [
+            'food_id' => 'Название продукта',
+            'count' =>'Количество'
+        ];
+    }
 }

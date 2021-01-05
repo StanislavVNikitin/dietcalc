@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Таблица продуктов') }}</div>
+                    <div class="col-12 card-header"><b class="float-left">{{__('Таблица продуктов')}}</b><a class="float-right" href="{{ route('admin.foods.create') }}"><button type="button" class="btn btn-success">Добавить продукт</button></a></div>
 
                     <div class="card-body">
                         <table class="table">

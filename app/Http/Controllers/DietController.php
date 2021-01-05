@@ -96,8 +96,14 @@ class DietController extends Controller
                   'count' => $request->post('count'),
                   'user_id' => $userid
             ]);
-        $diet->save();
-        return redirect()->route('diet.index')->with('success', 'Продукт добавлен!');
+        $this->validate($request, Diet::rules(), [], Diet::attributeNames());
+        $result = $diet->save();
+        if ($result) {
+            return redirect()->route('diet.index')->with('success', 'Продукт добавлен в диету!');
+        } else {
+            $request->flash();
+            return redirect()->route('diet.create')->with('error', 'Ошибка добавления продукта в диету!');
+        }
     }
 
     /**
@@ -136,7 +142,7 @@ class DietController extends Controller
     {
         $diet->fill($request->all());
         $diet->save();
-        return redirect()->route('diet.index')->with('success', 'Продукт добавлен!');
+        return redirect()->route('diet.index')->with('success', 'Продукт успешно изменен в диете!');
     }
 
     /**
@@ -148,6 +154,6 @@ class DietController extends Controller
     public function destroy(Diet $diet)
     {
         $diet->delete();
-        return redirect()->route('diet.index')->with('success', 'Продукт удален!');
+        return redirect()->route('diet.index')->with('success', 'Продукт успешно удален из диеты!');
     }
 }

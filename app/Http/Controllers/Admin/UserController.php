@@ -23,13 +23,13 @@ class UserController extends Controller
             $user->save();
             return redirect()->back()->with('success', 'Права изменены');
         } else {
-            return redirect()->route('updateProfile')->with('error', 'Ошибка');
+            return redirect()->route('updateProfile')->with('error', 'Ошибка изменение прав');
         }
     }
     public function destroy(User $user)
     {
         $diet = Diet::query()->where('user_id', $user->id)->delete();
         $user->delete();
-        return redirect()->back()->with('success', 'Продукт удален!');
+        return redirect()->back()->with('success', 'Прользователь удален!');
     }
 }
